@@ -2,6 +2,25 @@
 
 This guide will walk you through installing the Azure CLI MCP Server for Claude Code on Windows.
 
+## ⚠️ IMPORTANT: Read Before Installing
+
+**This tool gives Claude direct access to your Azure infrastructure.**
+
+- Claude can create, modify, and delete Azure resources
+- Operations are real and can incur costs
+- Deleted resources may be unrecoverable
+- You are responsible for all actions taken
+
+**Recommendations:**
+- Start with a dev/test subscription, NOT production
+- Understand the security implications (see README.md)
+- Review operations before Claude executes them
+- Use Azure accounts with limited permissions
+
+**By proceeding, you accept these risks and responsibilities.**
+
+---
+
 ## Step 1: Prerequisites
 
 Before installing, ensure you have:

@@ -2,6 +2,42 @@
 
 Model Context Protocol (MCP) server that wraps Azure CLI for seamless Azure operations in Claude Code.
 
+## ⚠️ Important Security Warning
+
+**READ THIS BEFORE INSTALLING**
+
+This MCP server provides Claude with direct access to your Azure infrastructure through the Azure CLI. This means:
+
+- **Claude can create, modify, and delete Azure resources** based on your prompts
+- **Changes are real and irreversible** - deleted resources cannot be automatically recovered
+- **Costs can be incurred** - deploying resources may result in Azure charges
+- **Uses your Azure CLI credentials** - operates with your current Azure permissions
+
+### Best Practices
+
+✅ **DO:**
+- Start with read-only operations (list, show, get)
+- Test in a non-production subscription first
+- Review commands before Claude executes them
+- Understand what each operation does
+- Keep your Azure CLI authentication current
+
+❌ **DON'T:**
+- Use in production environments without careful review
+- Give carte blanche permission for destructive operations
+- Use with subscriptions containing critical resources until comfortable
+- Assume Claude will always make the right decision
+
+### Your Responsibility
+
+You are responsible for:
+- All actions taken through this MCP server
+- Any Azure costs incurred
+- Maintaining appropriate Azure RBAC permissions
+- Reviewing and understanding operations before execution
+
+**By installing this tool, you acknowledge these risks and responsibilities.**
+
 ## Features
 
 - **Authentication Management**: Check auth status, login, manage subscriptions
@@ -164,6 +200,38 @@ Azure Cloud (Microsoft)
 ```
 
 **Security**: Everything runs locally on your machine using your Azure CLI authentication. Claude (the AI) only sees the tool calls and results, not your credentials.
+
+## Security Considerations
+
+### Credential Security
+- Your Azure credentials stay on your machine - they are never sent to Claude
+- The MCP server uses your local Azure CLI authentication
+- Claude only receives the output of commands, not credentials
+
+### Permission Model
+- The MCP server inherits your Azure CLI permissions
+- If your Azure account can delete resources, so can this tool
+- Use Azure RBAC to limit what accounts can do (principle of least privilege)
+- Consider creating a separate Azure account with limited permissions for Claude operations
+
+### Recommended Security Practices
+
+1. **Use Read-Only Operations First**: Start with `list`, `show`, and `get` commands
+2. **Test in Dev/Test Subscriptions**: Don't start with production
+3. **Review Before Confirming**: Always understand what operation Claude is about to perform
+4. **Limit Permissions**: Use Azure RBAC roles like "Reader" for safer exploration
+5. **Monitor Costs**: Set up Azure cost alerts for unexpected charges
+6. **Audit Logs**: Enable Azure Activity Log to track all operations
+
+### What Could Go Wrong?
+
+Examples of potentially destructive operations:
+- `az group delete` - Deletes entire resource group and all resources
+- `az vm delete` - Deletes virtual machines
+- `az storage account delete` - Deletes storage accounts and all data
+- `az functionapp deployment` - Overwrites live code
+
+**Always verify you understand the operation before Claude executes it.**
 
 ## Troubleshooting
 
